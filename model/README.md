@@ -101,3 +101,7 @@ Every class in the model also implements the following two constructor methods:
 - `hypothesize`: creates an instance from a specific description of the sources and events that make up a scene. This function is called:
   1. in enumerative inference, for directly defining a scene of interest in a psychophysics experiment
   2. in sequential inference, for building up a scene through constructing sources out of candidate events 
+
+## Truncated normal
+
+Get truncated normal from `https://github.com/toshas/torch_truncnorm`. 
