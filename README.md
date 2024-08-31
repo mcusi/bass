@@ -17,5 +17,5 @@ The READMEs in this repository, as well as the code, contain references to secti
     - `generation/`: Generation of stimuli
     - `hypotheses/`: Creation of initial hypotheses for enumerative inference
     - `analysis/`:  Analysis of model inferences to get experiment results, and plot creation
-- `comparisons/`: Code to compute human-model dissimilarity, see section 2.6 and Appendix D.
+    - `comparisons/`: Code to compute human-model dissimilarity, see section 2.6 and Appendix D.
 - `everyday_sound_expts/`: Create and analyze everyday sound experiments, see section 2.8 and Appendix F. 

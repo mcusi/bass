@@ -1,0 +1,398 @@
+renderer:
+  source:
+    whistle:
+      trim: true
+    harmonic:
+      panpipes: true
+      trim: true
+      source_colour: attenuated_pink
+      attenuation_constant: 0
+    noise:
+      source_colour: pink
+      band: []
+      trim: true
+  steps:
+    t: 0.01
+    f: 0.3
+    scale: ERB
+    audio_sr: 20000
+  cholesky_stability:
+    long_duration: 1.6
+    spectrum:
+      basic: 0.01
+      add_to_long_sounds: 0
+    f0:
+      basic: 0.001
+      add_to_long_sounds: 0.005
+    amplitude:
+      basic: 0.001
+      add_to_long_sounds: 0.005
+  ramp_duration: 0.0184
+  lo_lim_freq: 20.0
+  tf:
+    rms_ref: 1.0e-06
+    representation: gtg
+    ramp: 0.01
+    gtg_params:
+      rep: gtg
+      twin: 0.025
+      thop: 0.01
+      nfilts: 64
+      fmin: 20
+      width: 0.5
+      log_constant: 1.0e-80
+      dB_threshold: 20
+      ref: 1.0e-06
+    cgm_params:
+      rep: cgm
+      ref: 1.0e-06
+      pad_factor: 2
+      use_rfft: true
+      half_cos_filter_kwargs:
+        n: 40
+        low_lim: 20
+        high_lim: 8000
+        sample_factor: 1
+        no_lowpass: true
+        no_highpass: true
+        full_filter: false
+      hann_downsampling_kwargs:
+        env_sr: 10000
+        window_size: 8
+        padding: 3
+      sk_downsampling_kwargs:
+        env_sr: 200
+        window_size: 499
+      compression_type: log
+      compression_kwargs:
+        power: 0.3
+        offset: 1.0e-08
+        scale: 1
+        clip_value: 5
+      rel_threshold: 60
+      abs_threshold: 20
+likelihood:
+  dist: constant
+  args: 10.0
+hyperpriors:
+  n_sources:
+    dist: poisson
+    args: 1.0
+  source_type:
+    dist: uniform_categorical
+    args:
+    - whistle
+    - noise
+    - harmonic
+  n_events:
+    dist: geometric
+    args: 0.5
+  gap:
+    precision:
+      dist: gamma
+      args:
+      - 2.5
+      - 1.0
+    mu:
+      dist: normal
+      args:
+      - -1.0
+      - 0.5
+    limits: []
+  duration:
+    precision:
+      dist: gamma
+      args:
+      - 2.5
+      - 1.0
+    mu:
+      dist: normal
+      args:
+      - -1.0
+      - 0.5
+    limits: []
+  whistle:
+    f0: &fundamental
+      mu:
+        dist: uniform
+        args:
+        - 3.0
+        - 33.19
+      kernel:
+        epsilon:
+          args: 0.1
+          dist: constant
+        parametrization:
+        - sigma
+        - sigma_within
+        - scale
+        scale:
+          args:
+          - 2.209836959838867
+          - 6.07558012008667
+          bounds:
+          - 0.01
+          - 10
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 5.656684875488281
+          - 4.785940647125244
+          bounds:
+          - 0.1
+          - 33
+          dist: inv_softplus_normal
+        sigma_within:
+          args:
+          - 0.4374740719795227
+          bounds:
+          - 0
+          - 10
+          dist: constant
+        type: SE
+      feature: &featureoptions
+        learn_inducing_locations: true
+    amplitude:
+      feature: *featureoptions
+      kernel:
+        epsilon:
+          args: 0.1
+          dist: constant
+        parametrization:
+        - sigma
+        - sigma_within
+        - scale
+        scale:
+          args:
+          - 6.913250923156738
+          - 0.2355537861585617
+          bounds:
+          - 0.01
+          - 10.0
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 1.0486104488372803
+          - -0.9692474007606506
+          bounds:
+          - 0.1
+          - 50.0
+          dist: inv_softplus_normal
+        sigma_within:
+          args:
+          - -0.5421565175056458
+          bounds:
+          - 0
+          - 10
+          dist: constant
+        type: SE
+      mu:
+        args:
+        - 0.0
+        - 120.0
+        dist: uniform
+  harmonic:
+    f0: *fundamental
+    amplitude:
+      feature: *featureoptions
+      kernel:
+        epsilon:
+          args: 0.5
+          dist: constant
+        parametrization:
+        - sigma
+        - sigma_within
+        - scale
+        scale:
+          args:
+          - -1.963586688041687
+          - 1.277565836906433
+          bounds:
+          - 0.01
+          - 10.0
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 6.809866905212402
+          - 2.961430788040161
+          bounds:
+          - 0.1
+          - 50.0
+          dist: inv_softplus_normal
+        sigma_within:
+          args:
+          - 2.6257896423339844
+          bounds:
+          - 0.0
+          - 10.0
+          dist: constant
+        type: SE
+      mu:
+        args:
+        - 0.0
+        - 120.0
+        dist: uniform
+    spectrum:
+      feature: *featureoptions
+      kernel:
+        epsilon:
+          args: 0.5
+          dist: constant
+        parametrization:
+        - sigma
+        - scale
+        scale:
+          args:
+          - -3.6416072845458984
+          - 10.400713920593262
+          bounds:
+          - 0.1
+          - 33.0
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 9.072152137756348
+          - 3.158546209335327
+          bounds:
+          - 0.1
+          - 50.0
+          dist: inv_softplus_normal
+        type: OU
+      mu:
+        args: 0.0
+        dist: constant
+  noise:
+    amplitude:
+      feature: *featureoptions
+      kernel:
+        epsilon:
+          args: 0.5
+          dist: constant
+        parametrization:
+        - sigma
+        - sigma_within
+        - scale
+        scale:
+          args:
+          - -5.1032915115356445
+          - 2.6710948944091797
+          bounds:
+          - 0.01
+          - 10.0
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 1.232221245765686
+          - 1.0043789148330688
+          bounds:
+          - 0.1
+          - 50.0
+          dist: inv_softplus_normal
+        sigma_within:
+          args:
+          - 1.0
+          bounds: []
+          dist: constant
+          learn: false
+        type: SE
+      mu:
+        args:
+        - 0.0
+        - 80.0
+        dist: uniform
+    spectrum:
+      feature: *featureoptions
+      kernel:
+        epsilon:
+          args: 0.5
+          dist: constant
+        parametrization:
+        - sigma
+        - scale
+        scale:
+          args:
+          - 3.749178647994995
+          - 9.281153678894043
+          bounds:
+          - 0.1
+          - 33.0
+          dist: inv_softplus_normal
+        sigma:
+          args:
+          - 11.800948143005371
+          - 3.3608410358428955
+          bounds:
+          - 0.1
+          - 50.0
+          dist: inv_softplus_normal
+        type: SE
+      mu:
+        args: 0.0
+        dist: constant
+optimization:
+  onset_buffer: 0.25
+  max_concurrent: 5
+  multiple_optimizers: true
+  total_steps: 4000
+  optimizer_class: Adam
+  learning_rate: 0.01
+  loss_type: elbo
+  n_importance_samples: 1
+  batch_size: 10
+  schedule: true
+  schedule_cycle: 50
+  schedule_patience: 5
+  n_to_keep: 2
+  add_background_noise_proposal: false
+  learning_rates:
+    f0_inducing_values: 5
+    spectrum_amplitude_inducing_values: 1
+    inducing_standard_deviation: 1
+    temporal_inducing_points: 0.1
+    spectrum_inducing_points: 0.1
+    timepoints_mu: 0.05
+    timepoints_sigma: 1
+    gp_lengthscale: 10
+    gp_sigma: 1
+    gp_mu: 1
+    gp_sigma_within: 1
+    gp_sigma_residual: 1
+    sequence_timings_distribution: 1
+    gp_hyperpriors: 1
+    gp_epsilon: 1
+    sequence_hyperpriors: 1
+report:
+  print: 1
+  plot: 500
+  ckpt: 500
+  profile: 5
+hypothesis:
+  delta_gp:
+    t: 0.01
+    f: 1
+    scale: ERB
+  neural:
+    iou_threshold: 0.25
+heuristics:
+  sequential:
+    use: true
+    max_sources: 4
+    max_new_sources_later: 2
+    max_new_sources_0: 3
+    max_new_events: 3
+    only_new_before: 1
+    max_scenes_per_iter: 100
+    update_gp_hyperpriors: false
+    full_duration_steps: 6000
+  earlystop:
+    use: true
+    steps: 250
+    cutoff: 5
+  event_fit:
+    max_proportion: 0.95
+  cleanup:
+    use: false
+    use_earlystop: true
+    early_stop_steps: 1000
+    minimum_merge_duration: 0.05
+    optimize_originals: false
