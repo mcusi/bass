@@ -19,3 +19,7 @@ The READMEs in this repository, as well as the code, contain references to secti
     - `analysis/`:  Analysis of model inferences to get experiment results, and plot creation
     - `comparisons/`: Code to compute human-model dissimilarity, see section 2.6 and Appendix D.
 - `everyday_sound_expts/`: Create and analyze everyday sound experiments, see section 2.8 and Appendix F. 
+
+## Notes
+
+This code is provided as a reference for the paper to help demonstrate the logic behind the model and experiments, rather than a fully executable package (due to its implementation for a specific slurm scheduler).  
