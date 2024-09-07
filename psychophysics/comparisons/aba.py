@@ -154,7 +154,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--network", type=str)
-    parser.add_argument("--sound_group", type=str, help="which sounds do you want to analyze?")
-    parser.add_argument("--expt_name", default=None, type=str, help="which sounds do you want to analyze?")
+    parser.add_argument("--sound-group", type=str, help="which sounds do you want to analyze?")
+    parser.add_argument("--expt-name", default=None, type=str, help="which inferences do you want to analyze?")
     args = parser.parse_args()
     main(args.sound_group, args.network, expt_name=args.expt_name)

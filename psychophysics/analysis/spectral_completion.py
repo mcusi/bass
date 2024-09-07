@@ -349,35 +349,71 @@ if __name__ == '__main__':
     print("Analyzing spectral completion!")
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sound-group", type=str, help="folder where wavs are saved")
-    parser.add_argument("--expt-name", type=str, help="folder to group inference results together")
-    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"], help="top-level folder for inference")
-    parser.add_argument("--sound-dir", type=str, default=os.environ["sound_dir"], help="top-level folder for inference")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder where wavs are saved")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder where inference results are grouped")
+    parser.add_argument("--inference-dir", type=str,
+                        default=os.environ["inference_dir"],
+                        help="top-level folder for inference")
+    parser.add_argument("--sound-dir", type=str,
+                        default=os.environ["sound_dir"],
+                        help="top-level folder for audio")
     parser.add_argument("--results-dir", type=str, default="home")
     parser.add_argument("--new", action="store_true")
     parser.add_argument("--model-comparison-dir", type=str, required=False)
     args = parser.parse_args()
     if args.results_dir == "home":
-        results_dir = os.path.join(os.environ["inference_dir"], args.expt_name, args.sound_group, "")
+        results_dir = os.path.join(
+            os.environ["inference_dir"],
+            args.expt_name,
+            args.sound_group,
+            "")
     else:
         results_dir = args.results_dir
 
-    fig1_results, fig1_stderr = figure1(args.sound_group, args.expt_name, args.inference_dir, args.sound_dir, results_dir, make_new=args.new)    
-    fig2_results, fig2_stderr = figure2(args.sound_group, args.expt_name, args.inference_dir, args.sound_dir, results_dir, make_new=args.new)
+    fig1_results, fig1_stderr = figure1(
+        args.sound_group,
+        args.expt_name,
+        args.inference_dir,
+        args.sound_dir,
+        results_dir,
+        make_new=args.new
+        )    
+    fig2_results, fig2_stderr = figure2(
+        args.sound_group,
+        args.expt_name,
+        args.inference_dir,
+        args.sound_dir,
+        results_dir,
+        make_new=args.new
+        )
 
     if args.model_comparison_dir is not None:
         result = {"fig1": fig1_results.tolist(), "fig2": fig2_results.tolist()}
         np.save(
-            os.path.join(args.model_comparison_dir, args.sound_group, args.expt_name, "result.npy"),
+            os.path.join(
+                args.model_comparison_dir,
+                args.sound_group, args.expt_name, "result.npy"
+                ),
             result,
             allow_pickle=True
             )
         for_plots = {
-            "fig1": {"means": fig1_results.tolist(), "stderrs": fig1_stderr.tolist()},
-            "fig2": {"means": fig2_results.tolist(), "stderrs": fig2_stderr.tolist()}
+            "fig1": {
+                "means": fig1_results.tolist(),
+                "stderrs": fig1_stderr.tolist()
+                },
+            "fig2": {
+                "means": fig2_results.tolist(),
+                "stderrs": fig2_stderr.tolist()
+                }
             }
         np.save(
-            os.path.join(args.model_comparison_dir, args.sound_group, args.expt_name, "for_plots.npy"),
+            os.path.join(
+                args.model_comparison_dir,
+                args.sound_group, args.expt_name, "for_plots.npy"
+                ),
             for_plots,
             allow_pickle=True
             )

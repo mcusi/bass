@@ -214,16 +214,35 @@ def multiple(sound_group, expt_name, inference_dir, sound_dir, results_path, n_s
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sound-group", type=str, help="folder to save wavs")
-    parser.add_argument("--expt-name", type=str, help="folder to group inference results together")
-    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"], help="top-level folder for inference")
-    parser.add_argument("--sound-dir", type=str, default=os.environ["sound_dir"], help="top-level folder for inference")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder where wavs saved")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder that groups inference results together")
+    parser.add_argument("--inference-dir", type=str,
+                        default=os.environ["inference_dir"],
+                        help="top-level folder for inference")
+    parser.add_argument("--sound-dir", type=str,
+                        default=os.environ["sound_dir"],
+                        help="top-level folder for sounds")
     parser.add_argument("--results-dir", type=str, default="home")
     parser.add_argument("--n-seeds", type=int, default=1)
     parser.add_argument("--model-comparison-dir", type=str, required=False)
     args = parser.parse_args()
     if args.results_dir == "home":
-        results_dir = os.path.join(args.inference_dir, args.expt_name, args.sound_group, "")
+        results_dir = os.path.join(
+            args.inference_dir,
+            args.expt_name,
+            args.sound_group,
+            ""
+            )
     else:
         results_dir = args.results_dir
-    multiple(args.sound_group, args.expt_name, args.inference_dir, args.sound_dir, results_dir, args.n_seeds, model_comparison_dir=args.model_comparison_dir)
+    multiple(
+        args.sound_group,
+        args.expt_name,
+        args.inference_dir,
+        args.sound_dir,
+        results_dir,
+        args.n_seeds,
+        model_comparison_dir=args.model_comparison_dir
+        )

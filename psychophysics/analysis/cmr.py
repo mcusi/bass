@@ -257,10 +257,14 @@ if __name__ == "__main__":
     manual_seed(0)
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sound-group", type=str, help="folder to save wavs")
-    parser.add_argument("--expt-name", type=str, help="folder to group inference results together")
-    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"], help="top-level folder for inference")
-    parser.add_argument("--sound-dir", type=str, default=os.environ["sound_dir"], help="top-level folder for inference")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder where wavs are saved")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder with grouped inference results")
+    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"],
+                        help="top-level folder for inference")
+    parser.add_argument("--sound-dir", type=str, default=os.environ["sound_dir"],
+                        help="top-level folder for sounds")
     parser.add_argument("--results-dir", type=str, default="")
     parser.add_argument("--seeds", type=str, default="0")
     parser.add_argument("--model-comparison-dir", type=str, required=False)
@@ -269,7 +273,15 @@ if __name__ == "__main__":
     os.environ["inference_dir"] = args.inference_dir
     os.environ["sound_dir"] = args.sound_dir
     if len(args.results_dir) == 0:
-        results_dir = os.path.join(args.inference_dir, args.expt_name, args.sound_group, "")
+        results_dir = os.path.join(
+            args.inference_dir, args.expt_name, args.sound_group, ""
+            )
     else:
         results_dir = args.results_dir
-    full_analysis(args.sound_group, args.expt_name, seeds, results_dir, model_comparison_dir=args.model_comparison_dir)
+    full_analysis(
+        args.sound_group,
+        args.expt_name,
+        seeds,
+        results_dir,
+        model_comparison_dir=args.model_comparison_dir
+        )

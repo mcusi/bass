@@ -197,15 +197,29 @@ def clip_sounds_and_log(dataset_name, n_datapoints, naming, config, exemplars_to
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("sound-group", help="name of folder to save sounds and config files in")
+    parser.add_argument("sound-group",
+                        help="audio folder for saving")
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--clip-duration", type=float, default=2.0, help="duration of mixture in seconds")
-    parser.add_argument("--max-time-before-onset", type=float, default=0.100, help="latest possible onset time for first premixture sound")
-    parser.add_argument("--min-time-before-onset", type=float, default=0.050, help="earlest possible onset time for first premixture sound")
-    parser.add_argument("--n-sounds", type=int, default=3, help="number of premixture sounds in scene, including background")
-    parser.add_argument("--min-recording-duration", type=float, default=0.2, help="minimum duration of premixture sound that counts as being in mixture, in seconds")
-    parser.add_argument("--datasets", type=str, default="fuss", help="which dataset to select mixtures from")
-    parser.add_argument("--n-samples", type=int, default=50, help="number of scenes to select")
+    parser.add_argument("--clip-duration", type=float, default=2.0,
+                        help="duration of mixture in seconds"
+                        )
+    parser.add_argument("--max-time-before-onset", type=float, default=0.100,
+                        help="latest possible onset time \
+                        for first premixture sound"
+                        )
+    parser.add_argument("--min-time-before-onset", type=float, default=0.050,
+                        help="earliest possible onset time \
+                            for first premixture sound")
+    parser.add_argument("--n-sounds", type=int, default=3,
+                        help="number of premixture sounds \
+                            in scene, including background")
+    parser.add_argument("--min-recording-duration", type=float, default=0.2,
+                        help="minimum duration of premixture sound \
+                            that counts as being in mixture, in seconds")
+    parser.add_argument("--datasets", type=str, default="fuss",
+                        help="which dataset to select mixtures from")
+    parser.add_argument("--n-samples", type=int, default=50,
+                        help="number of scenes to select")
     args = parser.parse_args()
 
     config = {

@@ -147,29 +147,67 @@ def slurm_launch(py_args, start_id=None, end_id=None, n_hours=2, partition=os.en
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--expt_type", type=str, help="which psychophysics experiment?")
-    parser.add_argument("--sound_group", type=str, help="folder to save wavs")
-    parser.add_argument("--config_name", type=str, help="name of yaml file for inference configs")
-    parser.add_argument("--expt_name", type=str, help="folder to group inference results together")
-    parser.add_argument("--expt_idx", type=int, help="typically SLURM_ARRAY_TASK_ID", default=None)
+    parser.add_argument("--expt-type", type=str,
+                        help="which psychophysics experiment?")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder to save wavs")
+    parser.add_argument("--config-name", type=str,
+                        help="name of yaml file for inference configs")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder to group inference results together")
+    parser.add_argument("--expt-idx", type=int,
+                        help="typically SLURM_ARRAY_TASK_ID", default=None)
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--n_seeds", type=int, default=None)
-    parser.add_argument("--partition", type=str, default=None)
-    parser.add_argument("--device", type=str, default="gpu")  # cpu or gpu
-    parser.add_argument("--start_with_seed", type=int, default=None)
+    parser.add_argument("--n-seeds", type=int, default=None,
+                        help="how many seeds to run")
+    parser.add_argument("--partition", type=str, default=None,
+                        help="slurm partition")
+    parser.add_argument("--device", type=str, default="gpu",
+                        help="cpu or gpu")
+    parser.add_argument("--start-with-seed", type=int, default=None,
+                        help="start from non-zero seed")
     args = parser.parse_args()
     print("Running psychophysics!", flush=True)
     print(args, flush=True)
 
     # for backup, relaunch this exact job
-    py_args = {"expt_type": args.expt_type, "sound_group": args.sound_group, "config_name": args.config_name, "expt_name": args.expt_name, "seed": args.seed, "n_seeds": args.n_seeds, "partition": args.partition, "device": args.device, "start_with_seed": args.start_with_seed}
+    py_args = {
+        "expt_type": args.expt_type,
+        "sound_group": args.sound_group,
+        "config_name": args.config_name,
+        "expt_name": args.expt_name,
+        "seed": args.seed,
+        "n_seeds": args.n_seeds,
+        "partition": args.partition,
+        "device": args.device,
+        "start_with_seed": args.start_with_seed
+        }
     if args.partition != "normal":
         dependency = f"afterany:{os.environ['SLURM_JOBID']}"
-        job_id = slurm_launch(py_args, start_id=args.expt_idx, end_id=args.expt_idx, partition=args.partition, device=args.device, dependency=dependency, return_jobid=True)
+        job_id = slurm_launch(
+            py_args,
+            start_id=args.expt_idx,
+            end_id=args.expt_idx,
+            partition=args.partition,
+            device=args.device,
+            dependency=dependency,
+            return_jobid=True
+            )
         print("Launched backup job:", job_id, "with dependency", dependency)
 
     # now do the code
-    run_experiment(args.expt_type, args.sound_group, args.config_name, args.expt_name, args.expt_idx, seed=args.seed, n_seeds=args.n_seeds, partition=args.partition, device=args.device, start_with_seed=args.start_with_seed)
+    run_experiment(
+        args.expt_type,
+        args.sound_group,
+        args.config_name,
+        args.expt_name,
+        args.expt_idx,
+        seed=args.seed,
+        n_seeds=args.n_seeds,
+        partition=args.partition,
+        device=args.device,
+        start_with_seed=args.start_with_seed
+        )
 
     # now cancel the backup job
     if args.partition != "normal":

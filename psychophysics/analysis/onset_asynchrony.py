@@ -452,15 +452,35 @@ if __name__ == '__main__':
     print("Analyzing onset asynchrony!")
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sound-group", type=str, help="folder to save wavs")
-    parser.add_argument("--expt-name", type=str, help="folder to group inference results together")
-    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"], help="top-level folder for inference")
-    parser.add_argument("--sound-dir", type=str, default=os.environ["sound_dir"], help="top-level folder for inference")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder where wavs are saved")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder with grouped inference results")
+    parser.add_argument("--inference-dir", type=str,
+                        default=os.environ["inference_dir"],
+                        help="top-level folder for inference")
+    parser.add_argument("--sound-dir", type=str,
+                        default=os.environ["sound_dir"],
+                        help="top-level folder for sounds")
     parser.add_argument("--results-dir", type=str, default="home")
-    parser.add_argument("--model-comparison-dir", type=str, help="where to save results for model comparisons", required=False)
+    parser.add_argument("--model-comparison-dir", type=str,
+                         help="where to save results for model comparisons",
+                         required=False)
     args = parser.parse_args()
     if args.results_dir == "home":
-        results_dir = os.path.join(args.inference_dir, args.expt_name, args.sound_group, "")
+        results_dir = os.path.join(
+            args.inference_dir,
+            args.expt_name,
+            args.sound_group,
+            ""
+            )
     else:
         results_dir = args.results_dir
-    expt1(args.sound_group, args.expt_name, args.inference_dir, args.sound_dir, results_dir,  model_comparison_dir=args.model_comparison_dir)
+    expt1(
+        args.sound_group,
+        args.expt_name,
+        args.inference_dir,
+        args.sound_dir,
+        results_dir,
+        model_comparison_dir=args.model_comparison_dir
+        )

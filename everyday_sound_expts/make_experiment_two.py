@@ -156,11 +156,14 @@ def main(expt_name, sound_group, expt_idx, trial_config):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--expt-name", help="name of results file")
-    parser.add_argument("--sound-group", help="name of results file")
-    parser.add_argument("--expt-idx", type=int, help="name of results file")
+    parser.add_argument("--expt-name", help="set of inferences")
+    parser.add_argument("--sound-group", help="sounds used in inferences")
+    parser.add_argument("--expt-idx", type=int,
+                        help="numbering of experiment with this \
+                              experiment name and sound group")
     parser.add_argument("--n-catch-trials", type=int, default=10,
-                        help="extra trials to assess whether participants are guessing"
+                        help="# extra trials to assess whether \
+                              participants are guessing"
                         )
     args = parser.parse_args()
     trial_config = {

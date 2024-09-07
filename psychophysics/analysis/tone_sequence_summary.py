@@ -627,16 +627,40 @@ def compare_two_aba_experiments(inference_folder_full, inference_folder_lesion, 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sound-group", type=str, help="folder to save wavs")
-    parser.add_argument("--expt-name", type=str, help="folder to group inference results together")
+    parser.add_argument("--sound-group", type=str,
+                        help="folder where wavs are saved")
+    parser.add_argument("--expt-name", type=str,
+                        help="folder where inference results grouped")
     parser.add_argument("--seeds", type=str, help="comma sep list of seeds")
-    parser.add_argument("--inference-dir", type=str, default=os.environ["inference_dir"], help="top-level folder for inference")
+    parser.add_argument("--inference-dir", type=str,
+                        default=os.environ["inference_dir"],
+                        help="top-level folder for inference")
     parser.add_argument("--results-dir", type=str, default=None)
-    parser.add_argument("--expts-to-analyze", type=str, default="aba,captor,cumul,compete", help="comma-separated list of expts included in this analysis")
-    parser.add_argument("--model-comparison-dir", type=str, required=False, help="path to save enumerative results for model comparison")
+    parser.add_argument("--expts-to-analyze", type=str,
+                        default="aba,captor,cumul,compete",
+                        help="comma-separated list of expts \
+                            included in this analysis"
+                            )
+    parser.add_argument("--model-comparison-dir", type=str,
+                        required=False,
+                        help="path to save results for model comparison"
+                        )
     args = parser.parse_args()
     if args.results_dir is None:
-        results_dir = os.path.join(os.environ["inference_dir"], args.expt_name, args.sound_group, "")
+        results_dir = os.path.join(
+            os.environ["inference_dir"],
+            args.expt_name,
+            args.sound_group, 
+            ""
+            )
     else:
         results_dir = args.results_dir
-    summarize(args.sound_group, args.expt_name, args.seeds.split(","), args.expts_to_analyze.split(","), args.inference_dir, results_dir=results_dir, model_comparison_dir=args.model_comparison_dir)
+    summarize(
+        args.sound_group,
+        args.expt_name,
+        args.seeds.split(","),
+        args.expts_to_analyze.split(","),
+        args.inference_dir,
+        results_dir=results_dir,
+        model_comparison_dir=args.model_comparison_dir
+        )

@@ -96,6 +96,8 @@ def get_formants_from_audio(x, Fs):
     
     # Get LPC.
     # MATLAB tutorial gives notes on specifying model order
+    # MATLAB tutorial:  To specify the model order, use the general rule that the order is two times the expected number of formants plus 2. In the frequency range, [0,|Fs|/2], you expect three formants
+    # We know we gave Pratt 5 formants
     ncoeff = int(2 + 5)
     A = lpc(x1, ncoeff)
 
@@ -182,7 +184,10 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--network", type=str)
-    parser.add_argument("--sound_group", type=str, help="which sounds do you want to analyze?")
-    parser.add_argument("--expt_name", default=None, type=str, help="which sounds do you want to analyze?")
+    parser.add_argument("--sound-group", type=str,
+                        help="which sounds do you want to analyze?")
+    parser.add_argument("--expt-name", default=None,
+                        type=str,
+                        help="which inferences do you want to analyze?")
     args = parser.parse_args()
     fig1(args.sound_group, args.network, expt_name=args.expt_name)

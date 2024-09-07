@@ -3,6 +3,7 @@
 Code for Bayesian auditory scene synthesis ([project page](https://mcdermottlab.mit.edu/mcusi/bass/)). 
 
 The corresponding [publication](https://www.sciencedirect.com/science/article/pii/S0010027724001604) is:
+
 Maddie Cusimano, Luke B. Hewitt, Josh H. McDermott. (2024). Listening with generative models. _Cognition_. 253, 105874. doi: https://doi.org/10.1016/j.cognition.2024.105874.
 
 The READMEs in this repository, as well as the code, contain references to sections, equations and figures, which correspond to the numbering in this publication.
@@ -17,7 +18,7 @@ The READMEs in this repository, as well as the code, contain references to secti
     - `hypotheses/`: Creation of initial hypotheses for enumerative inference
     - `analysis/`:  Analysis of model inferences to get experiment results, and plot creation
     - `comparisons/`: Code to compute human-model dissimilarity, see section 2.6 and Appendix D.
-- `everyday_sound_expts/`: Notes on everyday sound experiments, see section 2.8 and Appendix F. 
+- `everyday_sound_expts/`: Code to create and analyze everyday sound experiments, see section 2.8 and Appendix F. 
 
 ## Notes
 
