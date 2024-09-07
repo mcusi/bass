@@ -25,6 +25,7 @@ import inference.sequential_heuristics
 import inference.proposals
 import inference.optimize
 from inference.serial import hypothesis_setup
+from inference.viz import chain_viz
 import inference.cleanup
 from inference.construction import get_hypothesis_name, analyze_previous_round, create_new_scene_hypotheses, create_scene_hypotheses_cleanup
 from util.sample import manual_seed
