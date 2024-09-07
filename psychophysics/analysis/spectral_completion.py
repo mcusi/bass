@@ -129,12 +129,12 @@ def compare_tabs(inferred_dict, comparison_dict):
         )))
 
 
-def compare_tabs_from_multiple(results_dict, comparison_dicts, savepath, sound_name):
+def compare_tabs_from_multiple(results_dict, comparison_dicts):
     """ Find the best spectrum match for a single sound """
 
     # Get keys for input dicts
     levels = sorted([k for k in comparison_dicts.keys()], key=lambda k: float(k))
-    seeds = [seed_idx for (init, seed_idx) in results_dict.keys()]
+    seeds = [seed_idx for (_, seed_idx) in results_dict.keys()]
     seeds = np.unique(seeds)
 
     # Loop over seeds, modal inits, and comparison stimuli
@@ -176,7 +176,7 @@ def compute_comparisons(sound_names, inferred_dicts, comparison_dicts, shared_co
     stderr = np.full(len(sound_names), np.nan)
     for s_idx, sound_name in enumerate(sound_names):
         use_comparison_dicts = comparison_dicts if shared_comparisons else comparison_dicts[sound_name[1:]]
-        results[s_idx], stderr[s_idx], distance_matrix, spectrum = compare_tabs_from_multiple(inferred_dicts[sound_name], use_comparison_dicts, savepath, sound_name)
+        results[s_idx], stderr[s_idx], _ = compare_tabs_from_multiple(inferred_dicts[sound_name], use_comparison_dicts)
     print([pair for pair in zip(sound_names, results)])
     return results, stderr
 
@@ -203,7 +203,6 @@ def figure1(sound_group, expt_name, inference_dir, sound_dir, savepath, make_new
 
     # Get explanations of comparison stimuli
     match_stimuli = glob(os.path.join(sound_dir, sound_group + "_match", "sc_1_*.wav"))
-    # match_stimuli = match_stimuli+ glob("/om2/user/lbh/basatorch/sounds/" + sound_group + "_match/sc_1_*.wav")
     if "compare" not in results_dict.keys():
         results_dict["compare"] = {}
     for match_stimulus in match_stimuli:

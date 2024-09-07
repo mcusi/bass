@@ -1,0 +1,53 @@
+BASA:
+  IMS_PER_BATCH: 20 # Note: gets divided by number of GPUs
+  TF_REPRESENTATION: "cgm" #cgm or gtg
+  IM_CUTOFF_CEIL: 180
+  IM_HEIGHT: 40
+  MASK_TYPES: [['ibm', 'bool'], ['f0', 'bool'], ['amplitude', 'real']]
+  TALLMASK_TYPES: [['spa', 'real']]
+  USE_REAL_TIMEPOINTS: True
+  USE_BACKGROUND_NOISE: False
+  BOX_HEIGHT_MASK: "ibm" # ibm or eventgram or padded
+  ROI_TALLMASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MyMaskRCNNConvUpsampleHead
+    NORM: ""
+    NUM_CONV: 4
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+DATALOADER:
+  NUM_WORKERS: 3 # Note this is workers PER gpu
+  FILTER_EMPTY_ANNOTATIONS: False
+MODEL:
+  DEVICE: "cuda"
+  META_ARCHITECTURE: "SoftOutputGeneralizedRCNN"
+  MASK_ON: True
+  PIXEL_MEAN: [12.778, 0.0, 0.0]
+  PIXEL_STD: [25.096, 1.0, 1.0] 
+  BACKBONE:
+    FREEZE_AT: 0
+  ANCHOR_GENERATOR:
+    SIZES: [[8, 16, 32, 64, 100, 120, 160]]
+    ASPECT_RATIOS: [[0.01, 0.05, 0.1, 0.3, 0.5, 1.0, 2.0, 5.0, 10.0]]
+  ROI_HEADS:
+    NUM_CLASSES: 3
+    BATCH_SIZE_PER_IMAGE: 256
+    NAME: MyStandardROIHeads
+  RESNETS:
+    DEPTH: 50
+  ROI_MASK_HEAD:
+    NAME: MyMaskRCNNConvUpsampleHead
+INPUT:
+  RANDOM_FLIP: "none"
+  MIN_SIZE_TRAIN: (0,) # Set to zero if no resizing. https://github.com/facebookresearch/detectron2/blob/dc4897d4d2ca1df7b922720186e481ccc7ba36a6/detectron2/data/transforms/augmentation_impl.py#L158
+  MAX_SIZE_TRAIN: 0
+  MIN_SIZE_TEST: 0 # Set to zero to disable resize in testing.
+  MAX_SIZE_TEST: 0
+  MASK_FORMAT: "bitmask"
+SOLVER:
+  IMS_PER_BATCH: 999
+  CHECKPOINT_PERIOD: 2000
+  MAX_ITER: 100000
+VERSION: 2
